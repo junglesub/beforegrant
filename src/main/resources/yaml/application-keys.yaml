@@ -1,0 +1,22 @@
+aws:
+  s3:
+    bucket_name: s3muinguard
+    read_s3_url: https://s3muinguard.s3.ap-northeast-2.amazonaws.com/
+    project_folder_name: app
+    access_key: AKIAXYKJSDRPFPCJRML6
+    secret_key: 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
+
+spring:
+  datasource:
+    url: jdbc:mariadb:aurora://ido-network-kor-cluster.cluster-c66etpnaozuq.ap-northeast-2.rds.amazonaws.com:3306/scaab?characterEncoding=UTF-8
+    username: root
+    password: building7
+    driver-class-name: org.mariadb.jdbc.Driver
+
+google:
+  login:
+    client_id: 868730276300-vmg16fubqhgv0g90gdn4t9g1quctjqiq.apps.googleusercontent.com
+
+email:
+  username: talhwan_1st@naver.com
+  password: skdltmgn1!
