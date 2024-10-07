@@ -42,7 +42,7 @@ public class TbnoticeRestController {
     //@PreAuthorize("permitAll()")
     @PostMapping("")
     public ResponseEntity<TbnoticeDto.CreateResDto> create(@Valid @RequestBody TbnoticeDto.CreateReqDto param, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        boolean isAdmin = false;
+        boolean isAdmin = true;
         TbnoticeDto.CreateServDto newParam = (TbnoticeDto.CreateServDto) TbnoticeDto.CreateServDto.builder().reqTbuserId(principalDetails.getTbuser().getId()).isAdmin(isAdmin).build().afterBuild(param);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(tbnoticeService.create(newParam));
@@ -57,7 +57,7 @@ public class TbnoticeRestController {
     @PreAuthorize("hasRole('USER')")
     @PutMapping("")
     public ResponseEntity<TbnoticeDto.CreateResDto> update(@Valid @RequestBody TbnoticeDto.UpdateReqDto param, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        boolean isAdmin = false;
+        boolean isAdmin = true;
         TbnoticeDto.UpdateServDto newParam = (TbnoticeDto.UpdateServDto) TbnoticeDto.UpdateServDto.builder().reqTbuserId(principalDetails.getTbuser().getId()).isAdmin(isAdmin).build().afterBuild(param);
         return ResponseEntity.status(HttpStatus.OK).body(tbnoticeService.update(newParam));
     }
@@ -71,7 +71,7 @@ public class TbnoticeRestController {
     @PreAuthorize("hasRole('USER')")
     @DeleteMapping("")
     public ResponseEntity<TbnoticeDto.CreateResDto> delete(@Valid @RequestBody DefaultDto.DeleteReqDto param, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        boolean isAdmin = false;
+        boolean isAdmin = true;
         DefaultDto.DeleteServDto newParam = (DefaultDto.DeleteServDto) DefaultDto.DeleteServDto.builder().reqTbuserId(principalDetails.getTbuser().getId()).isAdmin(isAdmin).build().afterBuild(param);
         return ResponseEntity.status(HttpStatus.OK).body(tbnoticeService.delete(newParam));
     }
@@ -84,7 +84,7 @@ public class TbnoticeRestController {
     @PreAuthorize("hasRole('USER')")
     @DeleteMapping("/list")
     public ResponseEntity<TbnoticeDto.CreateResDto> deletes(@Valid @RequestBody DefaultDto.DeletesReqDto param, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        boolean isAdmin = false;
+        boolean isAdmin = true;
         DefaultDto.DeletesServDto newParam = (DefaultDto.DeletesServDto) DefaultDto.DeletesServDto.builder().reqTbuserId(principalDetails.getTbuser().getId()).isAdmin(isAdmin).build().afterBuild(param);
         return ResponseEntity.status(HttpStatus.OK).body(tbnoticeService.deletes(newParam));
     }
@@ -98,7 +98,7 @@ public class TbnoticeRestController {
     @PreAuthorize("permitAll()")
     @GetMapping("")
     public ResponseEntity<TbnoticeDto.DetailResDto> detail(@Valid DefaultDto.DetailReqDto param, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        boolean isAdmin = false;
+        boolean isAdmin = true;
         String reqTbuserId = null; if(principalDetails != null && principalDetails.getTbuser() != null){ reqTbuserId = principalDetails.getTbuser().getId(); }
         DefaultDto.DetailServDto newParam = (DefaultDto.DetailServDto) DefaultDto.DetailServDto.builder().reqTbuserId(reqTbuserId).isAdmin(isAdmin).build().afterBuild(param);
 
@@ -113,7 +113,7 @@ public class TbnoticeRestController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/list")
     public ResponseEntity<List<TbnoticeDto.DetailResDto>> list(@Valid TbnoticeDto.ListReqDto param, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        boolean isAdmin = false;
+        boolean isAdmin = true;
         String reqTbuserId = null; if(principalDetails != null && principalDetails.getTbuser() != null){ reqTbuserId = principalDetails.getTbuser().getId(); }
         TbnoticeDto.ListServDto newParam = (TbnoticeDto.ListServDto) TbnoticeDto.ListServDto.builder().reqTbuserId(reqTbuserId).isAdmin(isAdmin).build().afterBuild(param);
 
@@ -129,7 +129,7 @@ public class TbnoticeRestController {
     @PreAuthorize("permitAll()")
     @GetMapping("/plist")
     public ResponseEntity<DefaultDto.PagedListResDto> plist(@Valid TbnoticeDto.PagedListReqDto param, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        boolean isAdmin = false;
+        boolean isAdmin = true;
         String reqTbuserId = null; if(principalDetails != null && principalDetails.getTbuser() != null){ reqTbuserId = principalDetails.getTbuser().getId(); }
         TbnoticeDto.PagedListServDto newParam = (TbnoticeDto.PagedListServDto) TbnoticeDto.PagedListServDto.builder().reqTbuserId(reqTbuserId).isAdmin(isAdmin).build().afterBuild(param);
 
@@ -143,7 +143,7 @@ public class TbnoticeRestController {
     )
     @GetMapping("/mlist")
     public ResponseEntity<List<TbnoticeDto.DetailResDto>> mlist(@Valid TbnoticeDto.ScrollListReqDto param, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        boolean isAdmin = false;
+        boolean isAdmin = true;
         String reqTbuserId = null; if(principalDetails != null && principalDetails.getTbuser() != null){ reqTbuserId = principalDetails.getTbuser().getId(); }
         TbnoticeDto.ScrollListServDto newParam = (TbnoticeDto.ScrollListServDto) TbnoticeDto.ScrollListServDto.builder().reqTbuserId(reqTbuserId).isAdmin(isAdmin).build().afterBuild(param);
         return ResponseEntity.status(HttpStatus.OK).body(tbnoticeService.scrollList(newParam));

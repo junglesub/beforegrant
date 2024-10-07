@@ -41,7 +41,8 @@ public class TbfaqRestController {
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/sequence")
     public ResponseEntity<TbfaqDto.CreateResDto> sequence(@RequestBody TbfaqDto.SequenceReqDto param, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        TbfaqDto.SequenceServDto newParam = (TbfaqDto.SequenceServDto) TbfaqDto.SequenceServDto.builder().reqTbuserId(principalDetails.getTbuser().getId()).isAdmin(false).build().afterBuild(param);
+        boolean isAdmin = true;
+        TbfaqDto.SequenceServDto newParam = (TbfaqDto.SequenceServDto) TbfaqDto.SequenceServDto.builder().reqTbuserId(principalDetails.getTbuser().getId()).isAdmin(isAdmin).build().afterBuild(param);
         return ResponseEntity.status(HttpStatus.CREATED).body(tbfaqService.sequence(newParam));
     }
 
@@ -56,7 +57,7 @@ public class TbfaqRestController {
     @PreAuthorize("hasRole('USER')")
     @PostMapping("")
     public ResponseEntity<TbfaqDto.CreateResDto> create(@Valid @RequestBody TbfaqDto.CreateReqDto param, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        boolean isAdmin = false;
+        boolean isAdmin = true;
         TbfaqDto.CreateServDto newParam = (TbfaqDto.CreateServDto) TbfaqDto.CreateServDto.builder().reqTbuserId(principalDetails.getTbuser().getId()).isAdmin(isAdmin).build().afterBuild(param);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(tbfaqService.create(newParam));
@@ -71,7 +72,7 @@ public class TbfaqRestController {
     @PreAuthorize("hasRole('USER')")
     @PutMapping("")
     public ResponseEntity<TbfaqDto.CreateResDto> update(@Valid @RequestBody TbfaqDto.UpdateReqDto param, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        boolean isAdmin = false;
+        boolean isAdmin = true;
         TbfaqDto.UpdateServDto newParam = (TbfaqDto.UpdateServDto) TbfaqDto.UpdateServDto.builder().reqTbuserId(principalDetails.getTbuser().getId()).isAdmin(isAdmin).build().afterBuild(param);
         return ResponseEntity.status(HttpStatus.OK).body(tbfaqService.update(newParam));
     }
@@ -85,7 +86,7 @@ public class TbfaqRestController {
     @PreAuthorize("hasRole('USER')")
     @DeleteMapping("")
     public ResponseEntity<TbfaqDto.CreateResDto> delete(@Valid @RequestBody DefaultDto.DeleteReqDto param, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        boolean isAdmin = false;
+        boolean isAdmin = true;
         DefaultDto.DeleteServDto newParam = (DefaultDto.DeleteServDto) DefaultDto.DeleteServDto.builder().reqTbuserId(principalDetails.getTbuser().getId()).isAdmin(isAdmin).build().afterBuild(param);
         return ResponseEntity.status(HttpStatus.OK).body(tbfaqService.delete(newParam));
     }
@@ -98,7 +99,7 @@ public class TbfaqRestController {
     @PreAuthorize("hasRole('USER')")
     @DeleteMapping("/list")
     public ResponseEntity<TbfaqDto.CreateResDto> deletes(@Valid @RequestBody DefaultDto.DeletesReqDto param, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        boolean isAdmin = false;
+        boolean isAdmin = true;
         DefaultDto.DeletesServDto newParam = (DefaultDto.DeletesServDto) DefaultDto.DeletesServDto.builder().reqTbuserId(principalDetails.getTbuser().getId()).isAdmin(isAdmin).build().afterBuild(param);
         return ResponseEntity.status(HttpStatus.OK).body(tbfaqService.deletes(newParam));
     }
@@ -112,7 +113,7 @@ public class TbfaqRestController {
     @PreAuthorize("permitAll()")
     @GetMapping("")
     public ResponseEntity<TbfaqDto.DetailResDto> detail(@Valid DefaultDto.DetailReqDto param, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        boolean isAdmin = false;
+        boolean isAdmin = true;
         String reqTbuserId = null; if(principalDetails != null && principalDetails.getTbuser() != null){ reqTbuserId = principalDetails.getTbuser().getId(); }
         DefaultDto.DetailServDto newParam = (DefaultDto.DetailServDto) DefaultDto.DetailServDto.builder().reqTbuserId(reqTbuserId).isAdmin(isAdmin).build().afterBuild(param);
 
@@ -127,7 +128,7 @@ public class TbfaqRestController {
     @PreAuthorize("permitAll()")
     @GetMapping("/list")
     public ResponseEntity<List<TbfaqDto.DetailResDto>> list(@Valid TbfaqDto.ListReqDto param, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        boolean isAdmin = false;
+        boolean isAdmin = true;
         String reqTbuserId = null; if(principalDetails != null && principalDetails.getTbuser() != null){ reqTbuserId = principalDetails.getTbuser().getId(); }
         TbfaqDto.ListServDto newParam = (TbfaqDto.ListServDto) TbfaqDto.ListServDto.builder().reqTbuserId(reqTbuserId).isAdmin(isAdmin).build().afterBuild(param);
 
@@ -143,7 +144,7 @@ public class TbfaqRestController {
     @PreAuthorize("permitAll()")
     @GetMapping("/plist")
     public ResponseEntity<DefaultDto.PagedListResDto> plist(@Valid TbfaqDto.PagedListReqDto param, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        boolean isAdmin = false;
+        boolean isAdmin = true;
         String reqTbuserId = null; if(principalDetails != null && principalDetails.getTbuser() != null){ reqTbuserId = principalDetails.getTbuser().getId(); }
         TbfaqDto.PagedListServDto newParam = (TbfaqDto.PagedListServDto) TbfaqDto.PagedListServDto.builder().reqTbuserId(reqTbuserId).isAdmin(isAdmin).build().afterBuild(param);
 
@@ -157,7 +158,7 @@ public class TbfaqRestController {
     )
     @GetMapping("/mlist")
     public ResponseEntity<List<TbfaqDto.DetailResDto>> mlist(@Valid TbfaqDto.ScrollListReqDto param, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        boolean isAdmin = false;
+        boolean isAdmin = true;
         String reqTbuserId = null; if(principalDetails != null && principalDetails.getTbuser() != null){ reqTbuserId = principalDetails.getTbuser().getId(); }
         TbfaqDto.ScrollListServDto newParam = (TbfaqDto.ScrollListServDto) TbfaqDto.ScrollListServDto.builder().reqTbuserId(reqTbuserId).isAdmin(isAdmin).build().afterBuild(param);
         return ResponseEntity.status(HttpStatus.OK).body(tbfaqService.scrollList(newParam));
