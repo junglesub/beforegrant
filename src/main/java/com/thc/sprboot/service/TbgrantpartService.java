@@ -7,6 +7,8 @@ import com.thc.sprboot.dto.TbgrantpartDto;
 import java.util.List;
 
 public interface TbgrantpartService {
+    TbgrantpartDto.CreateResDto toggle(TbgrantpartDto.ToggleServDto param);
+    /**/
     TbgrantpartDto.CreateResDto create(TbgrantpartDto.CreateServDto param);
     TbgrantpartDto.CreateResDto update(TbgrantpartDto.UpdateServDto param);
     TbgrantpartDto.CreateResDto delete(DefaultDto.DeleteServDto param);

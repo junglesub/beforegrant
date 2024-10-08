@@ -11,7 +11,11 @@ import lombok.Setter;
         ,@Index(columnList = "process")
         ,@Index(columnList = "createdAt")
         ,@Index(columnList = "modifiedAt")
-})
+        }
+        ,uniqueConstraints= {
+        @UniqueConstraint(name = "UQ_tbgrantpart_tbgrantId_target_func", columnNames = {"tbgrantId", "target", "func"})
+        }
+)
 @Entity
 public class Tbgrantpart extends AuditingFields {
 

@@ -26,6 +26,32 @@ public class TbgrantpartServiceImpl implements TbgrantpartService {
     }
 
     @Override
+    public TbgrantpartDto.CreateResDto toggle(TbgrantpartDto.ToggleServDto param){
+        if(!param.isAdmin()){ throw new NoAuthorizationException("no auth"); }
+        Tbgrantpart tbgrantpart = tbgrantpartRepository.findByTbgrantIdAndTargetAndFunc(param.getTbgrantId(), param.getTarget(), param.getFunc());
+        if(tbgrantpart == null){
+            // 지금 등록된 권한상세가 없는 경우!
+            if(!param.getDeleted()){
+                //생성을 부탁한 경우!
+                return create(TbgrantpartDto.CreateServDto.builder().tbgrantId(param.getTbgrantId()).target(param.getTarget()).func(param.getFunc()).isAdmin(true).build());
+            }
+            return null;
+        } else {
+            // 이미 등록된 권한상세가 있는 경우!
+            if(param.getDeleted()){
+                //지워주세요!
+                //return delete(TbgrantpartDto.UpdateServDto)
+                return delete(DefaultDto.DeleteServDto.builder().id(tbgrantpart.getId()).isAdmin(true).build());
+            } else {
+                //살려주세요!
+                return update(TbgrantpartDto.UpdateServDto.builder().id(tbgrantpart.getId()).deleted("N").isAdmin(true).build());
+            }
+        }
+    }
+
+    /**/
+
+    @Override
     public TbgrantpartDto.CreateResDto create(TbgrantpartDto.CreateServDto param){
         if(!param.isAdmin()){ throw new NoAuthorizationException("no auth"); }
         TbgrantpartDto.CreateResDto createResDto = tbgrantpartRepository.save(param.toEntity()).toCreateResDto();

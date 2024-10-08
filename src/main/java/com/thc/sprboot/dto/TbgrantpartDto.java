@@ -16,6 +16,44 @@ public class TbgrantpartDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    public static class ToggleReqDto extends DefaultDto.BaseDto{
+        @Schema(description = "tbgrantId", example="")
+        @NotNull
+        @NotEmpty
+        private String tbgrantId;
+        @Schema(description = "target", example="")
+        @NotNull
+        @NotEmpty
+        private String target;
+        @Schema(description = "func", example="")
+        @NotNull
+        @NotEmpty
+        private String func;
+        @Schema(description = "deleted", example="")
+        @NotNull
+        @NotEmpty
+        private Boolean deleted;
+    }
+
+    @SuperBuilder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ToggleServDto extends ToggleReqDto{
+        private String reqTbuserId;
+        private boolean isAdmin;
+    }
+
+    /**/
+
+    @SuperBuilder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class CreateReqDto extends DefaultDto.BaseDto {
         @Schema(description = "tbgrantId", example="")
         @NotNull

@@ -12,16 +12,16 @@
             {{title}}
         </td>
         <td>
-            <input class="input_chk_all input_chk_all_{{target}}" type="checkbox" keyword="{{target}}" id="input_chk_each_{{target}}_all" onchange="listener_chk_auth('{{target}}','all')" />
+            <input class="input_chk_all input_chk_all_{{target}}" type="checkbox" keyword="all" id="input_chk_each_{{target}}_all" onchange="listener_chk_auth('{{target}}','all')" />
         </td>
         <td>
-            <input class="input_chk_each input_chk_each_{{target}}" type="checkbox" keyword="{{target}}" id="input_chk_each_{{target}}_create" onchange="listener_chk_auth('{{target}}','create')" />
+            <input class="input_chk_each input_chk_each_{{target}}" type="checkbox" keyword="create" id="input_chk_each_{{target}}_create" onchange="listener_chk_auth('{{target}}','create')" />
         </td>
         <td>
-            <input class="input_chk_each input_chk_each_{{target}}" type="checkbox" keyword="{{target}}" id="input_chk_each_{{target}}_update" onchange="listener_chk_auth('{{target}}','update')" />
+            <input class="input_chk_each input_chk_each_{{target}}" type="checkbox" keyword="update" id="input_chk_each_{{target}}_update" onchange="listener_chk_auth('{{target}}','update')" />
         </td>
         <td>
-            <input class="input_chk_each input_chk_each_{{target}}" type="checkbox" keyword="{{target}}" id="input_chk_each_{{target}}_read" onchange="listener_chk_auth('{{target}}','read')" />
+            <input class="input_chk_each input_chk_each_{{target}}" type="checkbox" keyword="read" id="input_chk_each_{{target}}_read" onchange="listener_chk_auth('{{target}}','read')" />
         </td>
     </tr>
     {{/resultData_tbgrantpart}}
@@ -32,28 +32,62 @@
 </script>
 
 <script>
+    function toggle_tbgrantpart(obj_target, obj_func, obj_deleted){
+        let _param = {};
+        _param["tbgrantId"] = $("#detail_tbgrant_id").val();
+        _param["target"] = obj_target;
+        _param["func"] = obj_func;
+        _param["deleted"] = obj_deleted;
+
+        let _data = new Map();
+        _data.url = "/api/tbgrantpart/toggle";
+        _data.type = "PUT";
+        _data.param = _param;
+        _data.success = function(obj_data, obj_status, obj_xhr){
+            //alert("수정되었습니다.");
+        }
+        _data.error = function(obj_data, obj_status, obj_xhr){
+            alert("정상적으로 이루어지지 않았습니다. 다시 시도해주세요.");
+        }
+        func_ajax(_data);
+    }
     function listener_chk_auth(obj_target, obj_func){
         let checked = $("#input_chk_each_" + obj_target + "_" + obj_func).prop("checked");
         if(obj_func === "all"){
+            let input_chk_each = $(".input_chk_each_" + obj_target);
             if(checked){
+                for(let each of input_chk_each){
+                    if(!$(each).prop("checked")){
+                        toggle_tbgrantpart(obj_target, $(each).attr("keyword"), false);
+                    }
+                }
                 $(".input_chk_each_" + obj_target).prop("checked", true);
             } else {
+                for(let each of input_chk_each){
+                    if($(each).prop("checked")){
+                        toggle_tbgrantpart(obj_target, $(each).attr("keyword"), true);
+                    }
+                }
                 $(".input_chk_each_" + obj_target).prop("checked", false);
             }
         } else {
-            let all_checked = true;
-            let input_chk_each = $(".input_chk_each_" + obj_target);
-            for(let each of input_chk_each){
-                if(!$(each).prop("checked")){
-                    all_checked = false;
-                }
+            listener_chk_all_checked(obj_target);
+            //디비에도 반영해주세요!
+            toggle_tbgrantpart(obj_target, obj_func, !checked);
+        }
+    }
+    function listener_chk_all_checked(obj_target){
+        let input_chk_each = $(".input_chk_each_" + obj_target);
+        let all_checked = true;
+        for(let each of input_chk_each){
+            if(!$(each).prop("checked")){
+                all_checked = false;
             }
-
-            if(all_checked){
-                $(".input_chk_all_" + obj_target).prop("checked", true);
-            } else {
-                $(".input_chk_all_" + obj_target).prop("checked", false);
-            }
+        }
+        if(all_checked){
+            $(".input_chk_all_" + obj_target).prop("checked", true);
+        } else {
+            $(".input_chk_all_" + obj_target).prop("checked", false);
         }
     }
 </script>
@@ -170,6 +204,13 @@
                         each_data["title"] = arrayEach[1];
                         each_list.push(each_data);
                         $("#tbody_tbgrantpart_list").append(list_info_tbgrantpart_template({"resultData_tbgrantpart":each_list}));
+                    }
+
+                    let tbgrantparts = obj_data["tbgrantparts"];
+                    for(let each of tbgrantparts){
+                        //alert(JSON.stringify(each));
+                        $("#input_chk_each_" + each["target"] + "_" + each["func"]).prop("checked", true);
+                        listener_chk_all_checked(each["target"]);
                     }
 
                 }

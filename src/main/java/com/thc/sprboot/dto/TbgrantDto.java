@@ -8,6 +8,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 public class TbgrantDto {
 
     public static String[][] arrayTarget = {
@@ -99,6 +101,8 @@ public class TbgrantDto {
         private String title;
         @Schema(description = "content", example="")
         private String content;
+
+        private List<TbgrantpartDto.DetailResDto> tbgrantparts;
 
         private String[][] target = arrayTarget;
     }

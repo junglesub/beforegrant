@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TbgrantpartRepository extends JpaRepository<Tbgrantpart, String> {
+    Tbgrantpart findByTbgrantIdAndTargetAndFunc(String tbgrantId, String target, String func);
 }

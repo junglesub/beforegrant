@@ -3,10 +3,13 @@ package com.thc.sprboot.service.impl;
 import com.thc.sprboot.domain.Tbgrant;
 import com.thc.sprboot.dto.DefaultDto;
 import com.thc.sprboot.dto.TbgrantDto;
+import com.thc.sprboot.dto.TbgrantpartDto;
 import com.thc.sprboot.exception.NoAuthorizationException;
 import com.thc.sprboot.mapper.TbgrantMapper;
+import com.thc.sprboot.mapper.TbgrantpartMapper;
 import com.thc.sprboot.repository.TbgrantRepository;
 import com.thc.sprboot.service.TbgrantService;
+import com.thc.sprboot.service.TbgrantpartService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,12 +20,15 @@ public class TbgrantServiceImpl implements TbgrantService {
 
     private final TbgrantRepository tbgrantRepository;
     private final TbgrantMapper tbgrantMapper;
+    private final TbgrantpartService tbgrantpartService;
     public TbgrantServiceImpl(
             TbgrantRepository tbgrantRepository
             , TbgrantMapper tbgrantMapper
+            , TbgrantpartService tbgrantpartService
     ) {
         this.tbgrantRepository = tbgrantRepository;
         this.tbgrantMapper = tbgrantMapper;
+        this.tbgrantpartService = tbgrantpartService;
     }
 
     @Override
@@ -75,6 +81,9 @@ public class TbgrantServiceImpl implements TbgrantService {
     public TbgrantDto.DetailResDto detail(DefaultDto.DetailServDto param){
         //if(!param.isAdmin()){ throw new NoAuthorizationException("no auth"); }
         TbgrantDto.DetailResDto selectResDto = get(param);
+        if(selectResDto == null){ throw new RuntimeException("no data"); }
+        List<TbgrantpartDto.DetailResDto> tbgrantparts = tbgrantpartService.list(TbgrantpartDto.ListServDto.builder().tbgrantId(selectResDto.getId()).deleted("N").isAdmin(true).build());
+        selectResDto.setTbgrantparts(tbgrantparts);
         return selectResDto;
     }
 

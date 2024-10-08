@@ -32,6 +32,22 @@ public class TbgrantpartRestController {
         this.tbgrantpartService = tbgrantpartService;
     }
 
+    @Operation(summary = "권한상세 토글",
+            description = "권한상세 토글 컨트롤러 <br />"
+                    + "@param TbgrantpartDto.ToggleReqDto <br />"
+                    + "@return HttpStatus.OK(200) ResponseEntity\\<TbgrantpartDto.CreateResDto\\> <br />"
+                    + "@exception 필수 파라미터 누락하였을 때 등 <br />"
+    )
+    @PreAuthorize("hasRole('USER')")
+    @PutMapping("/toggle")
+    public ResponseEntity<TbgrantpartDto.CreateResDto> toggle(@Valid @RequestBody TbgrantpartDto.ToggleReqDto param, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        boolean isAdmin = true;
+        TbgrantpartDto.ToggleServDto newParam = (TbgrantpartDto.ToggleServDto) TbgrantpartDto.ToggleServDto.builder().reqTbuserId(principalDetails.getTbuser().getId()).isAdmin(isAdmin).build().afterBuild(param);
+        return ResponseEntity.status(HttpStatus.OK).body(tbgrantpartService.toggle(newParam));
+    }
+
+    /**/
+
     @Operation(summary = "권한상세 생성",
             description = "권한상세 생성 컨트롤러 <br />"
                     + "@param TbgrantpartDto.CreateReqDto <br />"
