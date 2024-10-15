@@ -4,12 +4,13 @@ import com.thc.sprboot.domain.Tbgrant;
 import com.thc.sprboot.dto.DefaultDto;
 import com.thc.sprboot.dto.TbgrantDto;
 import com.thc.sprboot.dto.TbgrantpartDto;
+import com.thc.sprboot.dto.TbgrantuserDto;
 import com.thc.sprboot.exception.NoAuthorizationException;
 import com.thc.sprboot.mapper.TbgrantMapper;
-import com.thc.sprboot.mapper.TbgrantpartMapper;
 import com.thc.sprboot.repository.TbgrantRepository;
 import com.thc.sprboot.service.TbgrantService;
 import com.thc.sprboot.service.TbgrantpartService;
+import com.thc.sprboot.service.TbgrantuserService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,14 +22,17 @@ public class TbgrantServiceImpl implements TbgrantService {
     private final TbgrantRepository tbgrantRepository;
     private final TbgrantMapper tbgrantMapper;
     private final TbgrantpartService tbgrantpartService;
+    private final TbgrantuserService tbgrantuserService;
     public TbgrantServiceImpl(
             TbgrantRepository tbgrantRepository
             , TbgrantMapper tbgrantMapper
             , TbgrantpartService tbgrantpartService
+            , TbgrantuserService tbgrantuserService
     ) {
         this.tbgrantRepository = tbgrantRepository;
         this.tbgrantMapper = tbgrantMapper;
         this.tbgrantpartService = tbgrantpartService;
+        this.tbgrantuserService = tbgrantuserService;
     }
 
     @Override
@@ -82,8 +86,12 @@ public class TbgrantServiceImpl implements TbgrantService {
         //if(!param.isAdmin()){ throw new NoAuthorizationException("no auth"); }
         TbgrantDto.DetailResDto selectResDto = get(param);
         if(selectResDto == null){ throw new RuntimeException("no data"); }
+        //권한 상세 전체 정보
         List<TbgrantpartDto.DetailResDto> tbgrantparts = tbgrantpartService.list(TbgrantpartDto.ListServDto.builder().tbgrantId(selectResDto.getId()).deleted("N").isAdmin(true).build());
         selectResDto.setTbgrantparts(tbgrantparts);
+        //권한 사용자 전체 정보
+        List<TbgrantuserDto.DetailResDto> tbgrantusers = tbgrantuserService.list(TbgrantuserDto.ListServDto.builder().tbgrantId(selectResDto.getId()).deleted("N").isAdmin(true).build());
+        selectResDto.setTbgrantusers(tbgrantusers);
         return selectResDto;
     }
 

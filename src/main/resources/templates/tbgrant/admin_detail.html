@@ -30,6 +30,31 @@
     var list_info_tbgrantpart = $("#list_info_tbgrantpart").html();
     var list_info_tbgrantpart_template = Handlebars.compile(list_info_tbgrantpart);
 </script>
+<script id="list_info_tbgrantuser" type="text/x-handlebars-template">
+    {{#resultData_tbgrantuser}}
+    <tr class="gradeA">
+        <td>
+            <font class="font_tbgrantuser_order">-</font>
+        </td>
+        <td>
+            {{tbuserUsername}}
+        </td>
+        <td>
+            {{tbuserNick}}
+        </td>
+        <td>
+            {{tbuesrPhone}}
+        </td>
+        <td>
+            <button class="btn btn-danger btn-sm" onclick="delete_tbgrantuser('{{id}}')">삭제</button>
+        </td>
+    </tr>
+    {{/resultData_tbgrantuser}}
+</script>
+<script type="text/javascript">
+    var list_info_tbgrantuser = $("#list_info_tbgrantuser").html();
+    var list_info_tbgrantuser_template = Handlebars.compile(list_info_tbgrantuser);
+</script>
 
 <script>
     function toggle_tbgrantpart(obj_target, obj_func, obj_deleted){
@@ -160,21 +185,49 @@
 
                         </div>
 
+                        <ul class="nav nav-tabs">
+                            <li><a class="nav-link active" data-toggle="tab" href="#tab-part"><i class="fa fa-briefcase"></i> 권한 상세</a></li>
+                            <li><a class="nav-link" data-toggle="tab" href="#tab-user"><i class="fa fa-user"></i> 권한 사용자</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="tab-part" class="tab-pane active">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>권한상세</th>
+                                        <th>전체</th>
+                                        <th>입력</th>
+                                        <th>수정</th>
+                                        <th>삭제</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tbody_tbgrantpart_list">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="tab-user" class="tab-pane">
+                                <div style="text-align: right;padding: 5px 0px;">
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#createTbgrantuser">
+                                        추가하기
+                                    </button>
+                                </div>
 
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>권한상세</th>
-                                <th>전체</th>
-                                <th>입력</th>
-                                <th>수정</th>
-                                <th>삭제</th>
-                            </tr>
-                            </thead>
-                            <tbody id="tbody_tbgrantpart_list">
-                            </tbody>
-                        </table>
-
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>id</th>
+                                        <th>nick</th>
+                                        <th>phone</th>
+                                        <th>/</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tbody_tbgrantuser_list">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -212,6 +265,17 @@
                         $("#input_chk_each_" + each["target"] + "_" + each["func"]).prop("checked", true);
                         listener_chk_all_checked(each["target"]);
                     }
+                    let tbgrantusers = obj_data["tbgrantusers"];
+                    for(let each of tbgrantusers){
+                        let each_list = [];
+                        each_list.push(each);
+                        $("#tbody_tbgrantuser_list").append(list_info_tbgrantuser_template({"resultData_tbgrantuser":each_list}));
+                    }
+                    let tempOrder = 0;
+                    let font_tbgrantuser_order = $(".font_tbgrantuser_order");
+                    for(let each of font_tbgrantuser_order){
+                        $(each).text(++tempOrder);
+                    }
 
                 }
                 _data.error = function(obj_data, obj_status, obj_xhr){
@@ -237,11 +301,78 @@
                 }
                 func_ajax(_data);
             }
+            function create_tbgrantuser(){
+                if(!listenerBeforeCreate()){
+                    return false;
+                }
+                let _param = {
+                    'tbgrantId' : $("#detail_tbgrant_id").val(),
+                    'tbuserId' : $("#create_tbgrantuser_tbuserId").val()
+                };
+                let _data = new Map();
+                _data.url = "/api/tbgrantuser";
+                _data.type = "POST";
+                _data.param = _param;
+                _data.success = function(obj_data, obj_status, obj_xhr){
+                    alert("등록");
+                    location.reload();
+                }
+                _data.error = function(obj_data, obj_status, obj_xhr){
+                    alert("정상적으로 이루어지지 않았습니다. 다시 시도해주세요.");
+                }
+                func_ajax(_data);
+            }
+            function delete_tbgrantuser(obj_id){
+                if (confirm("정말 삭제하시겠습니까?")) {
+                } else {
+                    alert("취소");
+                    return false;
+                }
+                let ids = listenerGetDeleteIds();
+                let _data = new Map();
+                _data.url = "/api/tbgrantuser";
+                _data.type = "DELETE";
+                _data.param = {
+                    'id' : obj_id
+                };
+                _data.success = function(obj_data, obj_status, obj_xhr){
+                    alert("완료");
+                    location.reload();
+                }
+                _data.error = function(obj_data, obj_status, obj_xhr){
+                    alert("정상적으로 이루어지지 않았습니다. 다시 시도해주세요.");
+                }
+                func_ajax(_data);
+            }
         </script>
         <body th:replace="~{@{includes/admin/footer}}"></body>
     </div>
     <body th:replace="~{@{includes/admin/right_sidebar}}"></body>
 </div>
 <body th:replace="~{@{includes/admin/bottom}}"></body>
+
+<!-- Modal -->
+<div class="modal fade" id="createTbgrantuser" tabindex="-1" role="dialog" aria-labelledby="createTbgrantuser" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">신규 추가하기</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label class="col-form-label">*사용자id</label>
+                <div>
+                    <input type="text" class="form-control m-b input_required" id="create_tbgrantuser_tbuserId" keyword="tbuserId" placeholder="내용을 입력하세요" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="create_tbgrantuser();">등록</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

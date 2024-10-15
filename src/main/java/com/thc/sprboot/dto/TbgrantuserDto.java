@@ -1,23 +1,14 @@
 package com.thc.sprboot.dto;
 
-import com.thc.sprboot.domain.Tbgrant;
+import com.thc.sprboot.domain.Tbgrantuser;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
-
-public class TbgrantDto {
-
-    public static String[][] arrayTarget = {
-            {"tbgrant", "권한"}
-            ,{"tbuser", "사용자"}
-            ,{"tbfaq", "FAQ"}
-            ,{"tbnotice", "공지사항"}
-    };
+public class TbgrantuserDto {
+    /**/
 
     @SuperBuilder
     @Schema
@@ -26,18 +17,14 @@ public class TbgrantDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class CreateReqDto extends DefaultDto.BaseDto {
-        @Schema(description = "cate", example="카테고리")
+        @Schema(description = "tbgrantId", example="")
         @NotNull
         @NotEmpty
-        private String cate;
-        @Schema(description = "title", example="")
+        private String tbgrantId;
+        @Schema(description = "tbuserId", example="")
         @NotNull
         @NotEmpty
-        @Size(max=400)
-        private String title;
-        @Schema(description = "content", example="")
-        @Size(max=4000)
-        private String content;
+        private String tbuserId;
     }
     @SuperBuilder
     @Schema
@@ -49,8 +36,8 @@ public class TbgrantDto {
         private String reqTbuserId;
         private boolean isAdmin;
 
-        public Tbgrant toEntity(){
-            return Tbgrant.of(getCate(), getTitle(), getContent());
+        public Tbgrantuser toEntity(){
+            return Tbgrantuser.of(getTbgrantId(), getTbuserId());
         }
     }
     @Builder
@@ -69,14 +56,10 @@ public class TbgrantDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class UpdateReqDto extends DefaultDto.UpdateReqDto{
-        @Schema(description = "cate", example="")
-        private String cate;
-        @Schema(description = "title", example="")
-        @Size(max=400)
-        private String title;
-        @Schema(description = "content", example="")
-        @Size(max=4000)
-        private String content;
+        @Schema(description = "tbgrantId", example="")
+        private String tbgrantId;
+        @Schema(description = "tbuserId", example="")
+        private String tbuserId;
     }
 
     @SuperBuilder
@@ -95,17 +78,19 @@ public class TbgrantDto {
     @Getter
     @Setter
     public static class DetailResDto extends DefaultDto.DetailResDto{
-        @Schema(description = "cate", example="")
-        private String cate;
-        @Schema(description = "title", example="")
-        private String title;
-        @Schema(description = "content", example="")
-        private String content;
+        @Schema(description = "tbgrantId", example="")
+        private String tbgrantId;
+        @Schema(description = "tbuserId", example="")
+        private String tbuserId;
 
-        private List<TbgrantpartDto.DetailResDto> tbgrantparts;
-        private List<TbgrantuserDto.DetailResDto> tbgrantusers;
-
-        private String[][] target = arrayTarget;
+        @Schema(description = "tbuserUsername", example="")
+        private String tbuserUsername;
+        @Schema(description = "tbuserName", example="")
+        private String tbuserName;
+        @Schema(description = "tbuserPhone", example="")
+        private String tbuserPhone;
+        @Schema(description = "tbuserNick", example="")
+        private String tbuserNick;
     }
 
     @SuperBuilder
@@ -115,10 +100,10 @@ public class TbgrantDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ListReqDto extends DefaultDto.ListReqDto{
-        @Schema(description = "cate", example="")
-        private String cate;
-        @Schema(description = "title", example="")
-        private String title;
+        @Schema(description = "tbgrantId", example="")
+        private String tbgrantId;
+        @Schema(description = "tbuserId", example="")
+        private String tbuserId;
     }
     @SuperBuilder
     @Schema
@@ -138,10 +123,10 @@ public class TbgrantDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class PagedListReqDto extends DefaultDto.PagedListReqDto{
-        @Schema(description = "cate", example="")
-        private String cate;
-        @Schema(description = "title", example="")
-        private String title;
+        @Schema(description = "tbgrantId", example="")
+        private String tbgrantId;
+        @Schema(description = "tbuserId", example="")
+        private String tbuserId;
     }
     @SuperBuilder
     @Schema
@@ -153,10 +138,10 @@ public class TbgrantDto {
         private String reqTbuserId;
         private boolean isAdmin;
 
-        @Schema(description = "cate", example="")
-        private String cate;
-        @Schema(description = "title", example="")
-        private String title;
+        @Schema(description = "tbgrantId", example="")
+        private String tbgrantId;
+        @Schema(description = "tbuserId", example="")
+        private String tbuserId;
     }
 
     @SuperBuilder
@@ -166,10 +151,10 @@ public class TbgrantDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ScrollListReqDto extends DefaultDto.ScrollListReqDto{
-        @Schema(description = "cate", example="")
-        private String cate;
-        @Schema(description = "title", example="")
-        private String title;
+        @Schema(description = "tbgrantId", example="")
+        private String tbgrantId;
+        @Schema(description = "tbuserId", example="")
+        private String tbuserId;
     }
     @SuperBuilder
     @Schema
