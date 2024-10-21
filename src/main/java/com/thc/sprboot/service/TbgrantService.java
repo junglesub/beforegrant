@@ -7,6 +7,8 @@ import com.thc.sprboot.dto.TbgrantDto;
 import java.util.List;
 
 public interface TbgrantService {
+    boolean grant(TbgrantDto.ExistServDto param);
+    /**/
     TbgrantDto.CreateResDto create(TbgrantDto.CreateServDto param);
     TbgrantDto.CreateResDto update(TbgrantDto.UpdateServDto param);
     TbgrantDto.CreateResDto delete(DefaultDto.DeleteServDto param);

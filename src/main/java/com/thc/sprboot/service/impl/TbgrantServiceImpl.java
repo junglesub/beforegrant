@@ -35,6 +35,10 @@ public class TbgrantServiceImpl implements TbgrantService {
         this.tbgrantuserService = tbgrantuserService;
     }
 
+    public boolean grant(TbgrantDto.ExistServDto param){
+        return tbgrantMapper.exist(param) > 0;
+    }
+    /**/
     @Override
     public TbgrantDto.CreateResDto create(TbgrantDto.CreateServDto param){
         if(!param.isAdmin()){ throw new NoAuthorizationException("no auth"); }

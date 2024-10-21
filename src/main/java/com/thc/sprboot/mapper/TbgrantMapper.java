@@ -6,6 +6,8 @@ import com.thc.sprboot.dto.TbgrantDto;
 import java.util.List;
 
 public interface TbgrantMapper {
+    int exist(TbgrantDto.ExistServDto param);
+    /**/
     TbgrantDto.DetailResDto detail(DefaultDto.DetailServDto param);
     List<TbgrantDto.DetailResDto> list(TbgrantDto.ListServDto param);
 

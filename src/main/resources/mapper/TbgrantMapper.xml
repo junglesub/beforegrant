@@ -2,6 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thc.sprboot.mapper.TbgrantMapper">
 
+	<select id="exist" parameterType="hashMap" resultType="Integer">
+		SELECT count(tbgrant.id) as listsize
+		FROM tbgrantpart, tbgrant, tbgrantuser
+		WHERE tbgrantpart.tbgrant_id = tbgrant.id
+		AND tbgrant.id = tbgrantuser.tbgrant_id
+		AND tbgrantpart.target = #{target}
+		AND tbgrantpart.func = #{func}
+		AND tbgrantuser.tbuser_id = #{tbuserId}
+		AND tbgrant.deleted = 'N'
+		AND tbgrantpart.deleted = 'N'
+		AND tbgrantuser.deleted = 'N'
+	</select>
+
 	<!---->
 	<select id="detail" parameterType="hashMap" resultType="com.thc.sprboot.dto.TbgrantDto$DetailResDto">
 		SELECT tbgrant.id

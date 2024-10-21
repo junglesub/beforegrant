@@ -25,6 +25,23 @@ public class TbgrantDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    public static class ExistServDto extends DefaultDto.BaseDto{
+        private String reqTbuserId;
+        private boolean isAdmin;
+
+        private String tbuserId;
+        private String target;
+        private String func;
+    }
+
+    /**/
+
+    @SuperBuilder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class CreateReqDto extends DefaultDto.BaseDto {
         @Schema(description = "cate", example="카테고리")
         @NotNull
